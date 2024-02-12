@@ -38,3 +38,9 @@ print(c)
 # (https://www.hackerrank.com/challenges/correlation-and-regression-lines-8/problem?isFullScreen=true)
 
 print(m * 10 + c)
+
+
+# Correlation and Regression Lines - A quick recap 4
+# (https://www.hackerrank.com/challenges/correlation-and-regression-lines-4/problem?isFullScreen=true)
+
+print(8.5)
