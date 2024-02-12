@@ -1,0 +1,48 @@
+#!/usr/bin/python
+"""
+This module is my attempt to solve the problem 
+(https://www.hackerrank.com/challenges/markov-snakes-and-ladders/problem?isFullScreen=true)
+ on HackerRank.
+    
+Author: Deekshith Rao
+Date: 2024-02-12
+"""
+
+import random
+
+T = int(input())  # number of test cases
+
+for t in range(T):
+    # Test case setup
+    die_probs = [float(x) for x in input().split(",")]
+    n_ladders, n_snakes = (int(x) for x in input().split(","))
+    ladders = [[int(i) for i in x.split(",")] for x in input().split(" ")]
+    snakes = [[int(i) for i in x.split(",")] for x in input().split(" ")]    
+    ladders_dict = {x[0]: x[1] for x in ladders}
+    snakes_dict = {x[0]: x[1] for x in snakes}
+
+    num_rolls_for_sims = []
+    for sim_idx in range(5000):
+        pos = 1  # Starting position
+
+        for roll_idx in range(1000):
+            roll = random.choices(range(1, 7), weights=die_probs)[0]
+
+            # If the roll will take the player past 100, then don't move
+            if pos + roll <= 100:
+                pos += roll
+
+            if pos in ladders_dict:
+                pos = ladders_dict[pos]
+            elif pos in snakes_dict:
+                pos = snakes_dict[pos]
+
+            # If the player has reached 100, then break
+            if pos == 100:
+                break
+        
+        # If the player has reached 100, then note the number of rolls, else ignore
+        if pos == 100:
+            num_rolls_for_sims.append(roll_idx + 1)
+    
+    print(int(sum(num_rolls_for_sims) / len(num_rolls_for_sims)))
