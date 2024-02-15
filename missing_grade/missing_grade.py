@@ -40,6 +40,7 @@ X_test = pd.DataFrame(test, columns=sub_all).fillna(0).astype(int)
 # Training the model ----------------------------------------------------------
 model = LinearRegression()
 # scores = cross_val_score(model, X_train, y_train, cv=5, scoring='neg_root_mean_squared_error')
+# print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test).round().astype(int)
 print("\n".join(map(str, y_pred)))
