@@ -11,9 +11,8 @@ Date: 2024-02-13
 import json
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.model_selection import cross_val_score
-import time
 
 # Reading the test data -------------------------------------------------------
 N_test = int(input())
@@ -31,7 +30,7 @@ with open('training.json') as f:
 _ = [x.pop('serial') for x in train]
 
 # Preprocessing the data ------------------------------------------------------
-y_train = [x.pop('Mathematics') for x in train]
+y_train = pd.Series([x.pop('Mathematics') for x in train])
 sub_lists = [list(x.keys()) for x in train]
 sub_all = list(set([item for sub_list in sub_lists for item in sub_list]))
 X_train = pd.DataFrame(train, columns=sub_all).fillna(0).astype(int)
@@ -39,8 +38,13 @@ X_test = pd.DataFrame(test, columns=sub_all).fillna(0).astype(int)
 
 # Training the model ----------------------------------------------------------
 model = LinearRegression()
+# Experiments
+# model = Ridge()
+# model = Lasso()
 # scores = cross_val_score(model, X_train, y_train, cv=5, scoring='neg_root_mean_squared_error')
 # print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 model.fit(X_train, y_train)
+
+# Predicting the outcome for test data ----------------------------------------
 y_pred = model.predict(X_test).round().astype(int)
 print("\n".join(map(str, y_pred)))
