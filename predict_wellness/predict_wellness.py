@@ -21,6 +21,13 @@ test = pd.read_csv('./data/bodyfat-validate.csv')
 # Fit the model
 model = LinearRegression()
 model = Ridge(alpha=0.5)
-model = Lasso(alpha=0.65)
+model = Lasso(alpha=0.7)
 scores = cross_val_score(model, X_train, y_train, cv=5, scoring='neg_mean_squared_error')
 print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+# Predict the test data
+model.fit(X_train, y_train)
+X_test = test.drop(columns=['Id'])
+y_pred = model.predict(X_test)
+pred = pd.DataFrame({'Id': test['Id'], 'BodyFat': y_pred})
+pred.to_csv('./submission.csv', index=False)
